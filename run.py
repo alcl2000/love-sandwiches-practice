@@ -28,6 +28,7 @@ def get_sales_data():
         if validate_data(sales_data):
             print('Data is valid')
             break
+    return sales_data
 
 
 def validate_data(values):
@@ -47,4 +48,49 @@ def validate_data(values):
     return True
 
 
-get_sales_data()
+def update_sales_worksheet(data):
+    """
+    Updates sales worksheet
+    Adds new row with input data
+    """
+    print('updating sales worksheet...\n')
+    sales_worksheet = SHEET.worksheet('sales')
+    sales_worksheet.append_row(data)
+
+
+def calculate_surplus_data(sales_row):
+    """
+    compare the sales and the stock to caluclate surplus or waste
+    """
+    stock = SHEET.worksheet('stock').get_all_values()
+    stock_row = stock[-1]
+    
+    surplus_data = []
+    for stock, sales in zip(stock_row, sales_row):
+        surplus = int(stock) - sales
+        surplus_data.append(surplus)
+    print(surplus_data)
+    update_surplus_worksheet(surplus_data)
+
+
+def update_surplus_worksheet(surplus_data):
+    """
+    updates the surplus worksheet with the new surpluss data values
+    """
+    print('Updating surplus worksheet...\n')
+    surplus_worksheet = SHEET.worksheet('surplus')
+    surplus_worksheet.append_row(surplus_data)
+
+
+def main():
+    """
+    main function calls
+    """
+    data = get_sales_data()
+    sales_data = [int(num) for num in data]
+    update_sales_worksheet(sales_data)
+    calculate_surplus_data(sales_data)
+
+
+print('Welcome to Love Sandwiches Data automation')
+main()
