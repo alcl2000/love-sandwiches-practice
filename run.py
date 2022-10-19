@@ -73,6 +73,33 @@ def calculate_surplus_data(sales_row):
     return surplus_data 
 
 
+def get_last_5_sales_data():
+    """
+    collects the last 5 enteries from the sheet
+    returns data as lists
+    """
+    sales = SHEET.worksheet('sales')
+    # print(column)
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    print(columns)
+
+
+def caluclate_stock_average(data):
+    """
+    takes averge of each stock type, adds 10%
+    """
+    new_stock_data = []
+
+    for column in data:
+        int_column = [int(num) for num in column]
+        average = sum(int_column) / len(int_column)
+        stock_num = average * 1.1
+        new_stock_data.append(round('stock_num'))
+    return new_stock_data
+
 def main():
     """
     main function calls
@@ -85,4 +112,5 @@ def main():
 
 
 print('Welcome to Love Sandwiches Data automation')
-main()
+# main()
+get_last_5_sales_data()
